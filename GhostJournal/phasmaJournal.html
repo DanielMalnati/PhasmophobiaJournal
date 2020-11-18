@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <link href="style.css" rel="stylesheet"/>
+        <title>Ghost Journal</title>
+    </head>
+    <body background="bkgrd.jpg">
+        <div style="width: 100%; display: inline-block;">
+            <input type="button" class="evidence" value="EMF Level 5" onclick="evidenceSelected(this,0);"/> 
+            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,0);"/> 
+            <br>
+            <input type="button" class="evidence" value="Fingerprints" onclick="evidenceSelected(this,1);"/>
+            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,1);"/> 
+            <br>
+            <input type="button" class="evidence" value="Ghost Writing" onclick="evidenceSelected(this,2);"/>
+            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,2);"/> 
+            <br>
+            <input type="button" class="evidence" value="Spirit Box" onclick="evidenceSelected(this,3);"/> 
+            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,3);"/> 
+            <br>
+            <input type="button" class="evidence" value="Freezing Temperatures" onclick="evidenceSelected(this,4);"/>
+            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,4);"/>  
+            <br>
+            <input type="button" class="evidence" value="Ghost Orbs" onclick="evidenceSelected(this,5);"/> 
+            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,5);"/> 
+        </div>
+        <hr>
+        <div id="divGhosts" style="height: 65%; overflow: scroll; text-align: center;"></div>
+        <script src="ghosts.js"></script>
+    </body>
+</html>

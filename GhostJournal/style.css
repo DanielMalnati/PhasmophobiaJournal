@@ -1,0 +1,48 @@
+.ruledOut {
+    color: red;
+    font-size: 24px;
+}
+.possible {
+    color: white;
+    font-size: 24px;
+}
+.evidence {
+    width: 90%;
+    border: none;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.evidenceSelected {
+    width: 90%;
+    border: none;
+    background-color: green;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.ruleOut {
+    width: 9%;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.ruleOutSelected {
+    width: 9%;
+    border: none;
+    background-color: brown;
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 5px;
+}
