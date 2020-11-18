@@ -19,19 +19,25 @@ function Ghost(type, evidence, strength, weakness)
 var g_aGhosts = [];
 g_aGhosts.push(new Ghost("Spirit", [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "None", "Smudge Sticks"));
 g_aGhosts.push(new Ghost("Wraith", [EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING, EV_INDEX_SPIRITBOX], "Walk through walls", "Salt"));
-g_aGhosts.push(new Ghost("Phantom", [EV_INDEX_EMF5, EV_INDEX_FREEZING, EV_INDEX_ORBS], "Drains sanity with line of sight ", "Photo Camera"));
+g_aGhosts.push(new Ghost("Phantom", [EV_INDEX_EMF5, EV_INDEX_FREEZING, EV_INDEX_ORBS], "Drains sanity when seen", "Photo Camera"));
 g_aGhosts.push(new Ghost("Mare", [EV_INDEX_FREEZING, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Darkness", "Lights"));
 g_aGhosts.push(new Ghost("Banshee", [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING], "Targets specific person", "Crucifix"));
-g_aGhosts.push(new Ghost("Poltergeist", [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Move many objects", "Empty Room"));
+g_aGhosts.push(new Ghost("Poltergeist", [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Moves objects", "Empty Room"));
 g_aGhosts.push(new Ghost("Revenant", [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING], "Fast when hunting", "Hiding"));
 g_aGhosts.push(new Ghost("Shade", [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_WRITING], "Targets certain player", "Many People"));
 g_aGhosts.push(new Ghost("Jinn", [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Fast", "Breaker Off"));
-g_aGhosts.push(new Ghost("Demon", [EV_INDEX_FREEZING, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "Hunting", ""));
-g_aGhosts.push(new Ghost("Yurei", [EV_INDEX_ORBS, EV_INDEX_FREEZING, EV_INDEX_WRITING], "Drains sanity", ""));
-g_aGhosts.push(new Ghost("Oni", [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "", ""));
+g_aGhosts.push(new Ghost("Demon", [EV_INDEX_FREEZING, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "Hunting", "Ouiji Board"));
+g_aGhosts.push(new Ghost("Yurei", [EV_INDEX_ORBS, EV_INDEX_FREEZING, EV_INDEX_WRITING], "Drains sanity", "Sanity Pills"));
+g_aGhosts.push(new Ghost("Oni", [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "Hunts with high activity", "Easy to find"));
+
+// DLC Ghosts
+//g_aGhosts.push(new Ghost("DLC_Hym", [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_FREEZING], "Possesses Players", "Cant hunt Possessed Player"));
+//g_aGhosts.push(new Ghost("DLC_Ghost", [EV_INDEX_FINGERPRINTS, EV_INDEX_SPIRITBOX, EV_INDEX_FREEZING], "", ""));
+
 
 // Globals
 var gGhostsDiv = document.getElementById("divGhosts");
+// Index Matches Evidence Index
 var gEvidenceSelected = [false,false,false,false,false,false];
 var gEvidenceRuledOut = [false,false,false,false,false,false];
 
@@ -41,7 +47,7 @@ checkEvidence();
 // Trigger Evidence Check
 function checkEvidence()
 {
-    var evidenceSelected = getSelectedEvidence();
+    var evidenceSelected = getSelected(gEvidenceSelected);
     var ghostList = getPossibleGhosts(evidenceSelected);
     outputToGhosts(ghostList);
 }
@@ -61,45 +67,20 @@ function ruledOutEvidence(btn, index)
 }
 
 // return array of checked elements
-function getSelectedEvidence()
+function getSelected(selections)
 {
     var list = [];
     for (var i = 0; i < 6; i++)
-    {
-        if (gEvidenceSelected[i])
+        if (selections[i])
             list.push(i);
-    }
     return list;
-}
-
-// return array of checked elements
-function getRuledOutEvidence()
-{
-    var list = [];
-    for (var i = 0; i < 6; i++)
-    {
-        if (gEvidenceRuledOut[i])
-            list.push(i);
-    }
-    return list;
-}
-
-// If evidence is on ruled out list return true
-function isEvidenceRuledOut(evidence, rolist)
-{
-    for (var i = 0; i < rolist.length; i++)
-    {
-        if (evidence == rolist[i])
-            return true;
-    }
-    return false;
 }
 
 // Output the list of possible ghosts
 function outputToGhosts(ghosts)
 {
     gGhostsDiv.innerHTML = ""; // Clear the output area
-    var ruledOutEvidence = getRuledOutEvidence(); // Get the list of ruled out evidence
+    var ruledOutEvidence = getSelected(gEvidenceRuledOut); // Get the list of ruled out evidence
     for (var i = 0; i < ghosts.length; i++)
     {
         var el = document.createElement("p");
@@ -127,11 +108,17 @@ function outputToGhosts(ghosts)
         el.appendChild(el2);
         gGhostsDiv.appendChild(el);
     } // end outer for
+    // If evidence is on ruled out list return true
+    function isEvidenceRuledOut(evidence, rolist)
+    {
+        for (var i = 0; i < rolist.length; i++)
+            if (evidence == rolist[i])
+                return true;
+        return false;
+    }
 }
 
-/*
-    Return array of Possible ghosts
-*/
+// Return array of Possible ghosts
 function getPossibleGhosts(evidence)
 {
     var ghosts = [];
@@ -144,22 +131,20 @@ function getPossibleGhosts(evidence)
             // Does the ghost have this evidence?
             if (g_aGhosts[gIndex].evidence[0] == evidence[i] ||
                 g_aGhosts[gIndex].evidence[1] == evidence[i] ||
-                g_aGhosts[gIndex].evidence[2] == evidence[i])
-            {
+                g_aGhosts[gIndex].evidence[2] == evidence[i]){
                 numMatches++;
             }
         }
 
         // If the num matches match the evidence entered, add to the list
         if (numMatches >= evidence.length)
-        {
             ghosts.push(g_aGhosts[gIndex]);
-        }
     }
 
     return ghosts;
 }
 
+// Convert index to String
 function evidenceToString(index)
 {
     var str = "";
