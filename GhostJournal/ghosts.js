@@ -6,6 +6,9 @@ const EV_INDEX_SPIRITBOX = 3;
 const EV_INDEX_FREEZING = 4;
 const EV_INDEX_ORBS = 5;
 
+// Output Mode
+var bUseIcons = true;
+
 // Constructor
 function Ghost(type, evidence, strength, weakness)
 {
@@ -70,7 +73,7 @@ function ruledOutEvidence(btn, index)
 function getSelected(selections)
 {
     var list = [];
-    for (var i = 0; i < 6; i++)
+    for (var i = 0; i < selections.length; i++)
         if (selections[i])
             list.push(i);
     return list;
@@ -80,23 +83,52 @@ function getSelected(selections)
 function outputToGhosts(ghosts)
 {
     gGhostsDiv.innerHTML = ""; // Clear the output area
+    var selectedEvidence = getSelected(gEvidenceSelected);
     var ruledOutEvidence = getSelected(gEvidenceRuledOut); // Get the list of ruled out evidence
     for (var i = 0; i < ghosts.length; i++)
     {
         var el = document.createElement("p");
-        el.innerHTML = "<strong>" + ghosts[i].type + "</strong>";
-        var el2 = document.createElement("p");
-        el2.innerText = "| ";
-
+        el.innerHTML = "<strong>" + ghosts[i].type + "</strong><br>";
         var ghostRuledOut = false; // This will determine if we mark ghost as ruled out
+
         // Append each evidence
         for (var j = 0; j <= 2; j++)
         {
             var evidenceIndex = ghosts[i].evidence[j];
             // Is this evidence ruled out
-            if (isEvidenceRuledOut(evidenceIndex, ruledOutEvidence) && ghostRuledOut == false)
+            if (containsEvidence(evidenceIndex, ruledOutEvidence) && ghostRuledOut == false)
+            {
                 ghostRuledOut = true;
-            el2.innerText += evidenceToString(evidenceIndex) + " | ";
+            }
+
+            // Output as Text or Images
+            if (bUseIcons)
+            {
+                var div = document.createElement("div");
+                div.className = "tooltip";
+
+                // Tool tip text
+                var span = document.createElement("span");
+                span.className = "tooltiptext";
+                span.innerHTML = evidenceToString(evidenceIndex);
+                div.appendChild(span);
+
+                // Image
+                var img = document.createElement("img");
+                img.className = (containsEvidence(evidenceIndex, selectedEvidence)) ? "selectedEvidenceImg" : "possibleImg";
+                img.className = (containsEvidence(evidenceIndex, ruledOutEvidence)) ? "ruledOutImg" : img.className;
+                img.src = evidenceImageSource(evidenceIndex); 
+                div.appendChild(img);
+                el.appendChild(div);
+            }
+            else
+            { 
+                var el2 = document.createElement("span");
+                el2.className = (containsEvidence(evidenceIndex, selectedEvidence)) ? "selectedEvidence" : "";
+                el2.innerHTML = evidenceToString(evidenceIndex) + "&nbsp&nbsp&nbsp&nbsp"; 
+                el.appendChild(el2);
+            }
+
         } // end inner for
 
         // Style if the ghost is ruled out
@@ -105,11 +137,10 @@ function outputToGhosts(ghosts)
         else
             el.className = "possible";
 
-        el.appendChild(el2);
         gGhostsDiv.appendChild(el);
     } // end outer for
     // If evidence is on ruled out list return true
-    function isEvidenceRuledOut(evidence, rolist)
+    function containsEvidence(evidence, rolist)
     {
         for (var i = 0; i < rolist.length; i++)
             if (evidence == rolist[i])
@@ -170,4 +201,32 @@ function evidenceToString(index)
             break;
     }
     return str;
+}
+
+// Convert index to String
+function evidenceImageSource(index)
+{
+    var src = "";
+    switch(index)
+    {
+        case EV_INDEX_EMF5:
+            src = "imgs/emf.png";
+            break;
+        case EV_INDEX_FINGERPRINTS:
+            src = "imgs/finger.png";
+            break;
+        case EV_INDEX_WRITING:
+            src = "imgs/writing.png";
+            break;
+        case EV_INDEX_SPIRITBOX:
+            src = "imgs/box.png";
+            break;
+        case EV_INDEX_FREEZING:
+            src = "imgs/freeze.png";
+            break;
+        case EV_INDEX_ORBS:
+            src = "imgs/orbs.png";
+            break;
+    }
+    return src;
 }
