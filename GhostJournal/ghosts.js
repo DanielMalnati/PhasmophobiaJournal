@@ -9,34 +9,81 @@ const EV_INDEX_ORBS = 5;
 // Output Mode
 var bUseIcons = true;
 
-// Constructor
-function Ghost(type, evidence, strength, weakness)
-{
-    this.type = type;
-    this.evidence = evidence;
-    this.strength = strength;
-    this.weakness = weakness;
-}
-
 // Ghosts
-var g_aGhosts = [];
-g_aGhosts.push(new Ghost("Spirit", [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "None", "Smudge Sticks"));
-g_aGhosts.push(new Ghost("Wraith", [EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING, EV_INDEX_SPIRITBOX], "Walk through walls", "Salt"));
-g_aGhosts.push(new Ghost("Phantom", [EV_INDEX_EMF5, EV_INDEX_FREEZING, EV_INDEX_ORBS], "Drains sanity when seen", "Photo Camera"));
-g_aGhosts.push(new Ghost("Mare", [EV_INDEX_FREEZING, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Darkness", "Lights"));
-g_aGhosts.push(new Ghost("Banshee", [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING], "Targets specific person", "Crucifix"));
-g_aGhosts.push(new Ghost("Poltergeist", [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Moves objects", "Empty Room"));
-g_aGhosts.push(new Ghost("Revenant", [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING], "Fast when hunting", "Hiding"));
-g_aGhosts.push(new Ghost("Shade", [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_WRITING], "Targets certain player", "Many People"));
-g_aGhosts.push(new Ghost("Jinn", [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX], "Fast", "Breaker Off"));
-g_aGhosts.push(new Ghost("Demon", [EV_INDEX_FREEZING, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "Hunting", "Ouiji Board"));
-g_aGhosts.push(new Ghost("Yurei", [EV_INDEX_ORBS, EV_INDEX_FREEZING, EV_INDEX_WRITING], "Drains sanity", "Sanity Pills"));
-g_aGhosts.push(new Ghost("Oni", [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], "Hunts with high activity", "Easy to find"));
-
-// DLC Ghosts
-//g_aGhosts.push(new Ghost("DLC_Hym", [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_FREEZING], "Possesses Players", "Cant hunt Possessed Player"));
-//g_aGhosts.push(new Ghost("DLC_Ghost", [EV_INDEX_FINGERPRINTS, EV_INDEX_SPIRITBOX, EV_INDEX_FREEZING], "", ""));
-
+var g_aGhosts = [
+    {
+        type: "Spirit", 
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], 
+        strength: "None", 
+        weakness: "Smudge Sticks"
+    },
+    {
+        type:"Wraith", 
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING, EV_INDEX_SPIRITBOX],  
+        strength: "Walk through walls",  
+        weakness: "Salt"
+    },
+    {
+        type:"Phantom",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FREEZING, EV_INDEX_ORBS],  
+        strength: "Drains sanity when seen",  
+        weakness: "Photo Camera"
+    },
+    {
+        type:"Mare",  
+        evidence: [EV_INDEX_FREEZING, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX],  
+        strength: "Darkness",  
+        weakness: "Lights"
+    },
+    {
+        type:"Banshee",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING],  
+        strength: "Targets specific person",  
+        weakness: "Crucifix"
+    },
+    {
+        type:"Poltergeist",  
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX],  
+        strength: "Moves objects",  
+        weakness: "Empty Room"
+    },
+    {
+        type:"Revenant",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING],  
+        strength: "Fast when hunting",  
+        weakness: "Hiding"
+    },
+    {
+        type:"Shade",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_WRITING],  
+        strength: "Targets certain player",  
+        weakness: "Many People"
+    },
+    {
+        type:"Jinn",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX],  
+        strength: "Fast",  
+        weakness: "Breaker Off"
+    },
+    {
+        type:"Demon",  
+        evidence: [EV_INDEX_FREEZING, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX],  
+        strength: "Hunting",  
+        weakness: "Ouiji Board"
+    },
+    {
+        type:"Yurei",  
+        evidence: [EV_INDEX_ORBS, EV_INDEX_FREEZING, EV_INDEX_WRITING],  
+        strength: "Drains sanity",  
+        weakness: "Sanity Pills"
+    },
+    {
+        type:"Oni",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX],  
+        strength: "Hunts with high activity",  
+        weakness: "Easy to find"
+    }
+];
 
 // Globals
 var gGhostsDiv = document.getElementById("divGhosts");
@@ -87,7 +134,7 @@ function outputToGhosts(ghosts)
     var ruledOutEvidence = getSelected(gEvidenceRuledOut); // Get the list of ruled out evidence
     for (var i = 0; i < ghosts.length; i++)
     {
-        var el = document.createElement("p");
+        var el = document.createElement("div");
         el.innerHTML = "<strong>" + ghosts[i].type + "</strong><br>";
         var ghostRuledOut = false; // This will determine if we mark ghost as ruled out
 
