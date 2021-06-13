@@ -6,8 +6,15 @@ const EV_INDEX_SPIRITBOX = 3;
 const EV_INDEX_FREEZING = 4;
 const EV_INDEX_ORBS = 5;
 
-// Output Mode
-var bUseIcons = true;
+// Evidence 
+var g_aEvidence = [
+    { index: EV_INDEX_EMF5,         label: "EMF Lvl 5",             icon: "imgs/emf.png" },
+    { index: EV_INDEX_FINGERPRINTS, label: "Fingerprints",          icon: "imgs/finger.png" },
+    { index: EV_INDEX_WRITING,      label: "Ghost Writing",         icon: "imgs/writing.png" },
+    { index: EV_INDEX_SPIRITBOX,    label: "Spirit Box",            icon: "imgs/box.png" },
+    { index: EV_INDEX_FREEZING,     label: "Freezing Temperatures", icon: "imgs/freeze.png" },
+    { index: EV_INDEX_ORBS,         label: "Ghost Orbs",            icon: "imgs/orbs.png" }
+];
 
 // Ghosts
 var g_aGhosts = [
@@ -82,12 +89,28 @@ var g_aGhosts = [
         evidence: [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX],  
         strength: "Hunts with high activity",  
         weakness: "Easy to find"
+    },
+    {
+        type:"Yokai [BETA]",  
+        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_ORBS, EV_INDEX_WRITING],  
+        strength: "Talking near ghost angers it, likely to attack",  
+        weakness: "Only hears nearby sounds when hunting"
+    },
+    {
+        type:"Hantu [BETA]",  
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_WRITING],  
+        strength: "Moves faster in cold",  
+        weakness: "Slower in warmth"
     }
 ];
 
+// UI Config
+var bUseIcons = true; // Output
+
 // Globals
 var gGhostsDiv = document.getElementById("divGhosts");
-// Index Matches Evidence Index
+
+// Index Matches Evidence Index (Boolean Toggles)
 var gEvidenceSelected = [false,false,false,false,false,false];
 var gEvidenceRuledOut = [false,false,false,false,false,false];
 
@@ -142,6 +165,7 @@ function outputToGhosts(ghosts)
         for (var j = 0; j <= 2; j++)
         {
             var evidenceIndex = ghosts[i].evidence[j];
+
             // Is this evidence ruled out
             if (containsEvidence(evidenceIndex, ruledOutEvidence) && ghostRuledOut == false)
             {
@@ -157,14 +181,14 @@ function outputToGhosts(ghosts)
                 // Tool tip text
                 var span = document.createElement("span");
                 span.className = "tooltiptext";
-                span.innerHTML = evidenceToString(evidenceIndex);
+                span.innerHTML = g_aEvidence[evidenceIndex].label;
                 div.appendChild(span);
 
                 // Image
                 var img = document.createElement("img");
                 img.className = (containsEvidence(evidenceIndex, selectedEvidence)) ? "selectedEvidenceImg" : "possibleImg";
                 img.className = (containsEvidence(evidenceIndex, ruledOutEvidence)) ? "ruledOutImg" : img.className;
-                img.src = evidenceImageSource(evidenceIndex); 
+                img.src = g_aEvidence[evidenceIndex].icon; 
                 div.appendChild(img);
                 el.appendChild(div);
             }
@@ -172,11 +196,11 @@ function outputToGhosts(ghosts)
             { 
                 var el2 = document.createElement("span");
                 el2.className = (containsEvidence(evidenceIndex, selectedEvidence)) ? "selectedEvidence" : "";
-                el2.innerHTML = evidenceToString(evidenceIndex) + "&nbsp&nbsp&nbsp&nbsp"; 
+                el2.innerHTML = g_aEvidence[evidenceIndex].label + "&nbsp&nbsp&nbsp&nbsp"; 
                 el.appendChild(el2);
             }
 
-        } // end inner for
+        }
 
         // Style if the ghost is ruled out
         if (ghostRuledOut)
@@ -185,7 +209,8 @@ function outputToGhosts(ghosts)
             el.className = "possible";
 
         gGhostsDiv.appendChild(el);
-    } // end outer for
+    }
+    
     // If evidence is on ruled out list return true
     function containsEvidence(evidence, rolist)
     {
@@ -220,60 +245,4 @@ function getPossibleGhosts(evidence)
     }
 
     return ghosts;
-}
-
-// Convert index to String
-function evidenceToString(index)
-{
-    var str = "";
-    switch(index)
-    {
-        case EV_INDEX_EMF5:
-            str = "EMF Lvl 5";
-            break;
-        case EV_INDEX_FINGERPRINTS:
-            str = "Fingerprints";
-            break;
-        case EV_INDEX_WRITING:
-            str = "Ghost Writing";
-            break;
-        case EV_INDEX_SPIRITBOX:
-            str = "Spirit Box";
-            break;
-        case EV_INDEX_FREEZING:
-            str = "Freezing Temperatures";
-            break;
-        case EV_INDEX_ORBS:
-            str = "Ghost Orbs";
-            break;
-    }
-    return str;
-}
-
-// Convert index to String
-function evidenceImageSource(index)
-{
-    var src = "";
-    switch(index)
-    {
-        case EV_INDEX_EMF5:
-            src = "imgs/emf.png";
-            break;
-        case EV_INDEX_FINGERPRINTS:
-            src = "imgs/finger.png";
-            break;
-        case EV_INDEX_WRITING:
-            src = "imgs/writing.png";
-            break;
-        case EV_INDEX_SPIRITBOX:
-            src = "imgs/box.png";
-            break;
-        case EV_INDEX_FREEZING:
-            src = "imgs/freeze.png";
-            break;
-        case EV_INDEX_ORBS:
-            src = "imgs/orbs.png";
-            break;
-    }
-    return src;
 }
