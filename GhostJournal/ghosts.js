@@ -104,6 +104,9 @@ var g_aGhosts = [
     }
 ];
 
+// Sort Ghosts A - Z
+g_aGhosts.sort((a,b) => (a.type > b.type) ? 1 : ((a.type < b.type) ? -1 : 0));
+
 // UI Config
 var bUseIcons = true; // Output
 
@@ -122,6 +125,10 @@ function checkEvidence()
 {
     var evidenceSelected = getSelected(gEvidenceSelected);
     var ghostList = getPossibleGhosts(evidenceSelected);
+    
+    // Sort by ruled out ghosts (false -> true)
+    ghostList.sort((a, b) => a.ruledOut - b.ruledOut);
+
     outputToGhosts(ghostList);
 }
 
@@ -149,6 +156,15 @@ function getSelected(selections)
     return list;
 }
 
+// If evidence is on ruled out list return true
+function containsEvidence(evidence, rolist)
+{
+    for (var i = 0; i < rolist.length; i++)
+        if (evidence == rolist[i])
+            return true;
+    return false;
+}
+
 // Output the list of possible ghosts
 function outputToGhosts(ghosts)
 {
@@ -167,7 +183,7 @@ function outputToGhosts(ghosts)
             var evidenceIndex = ghosts[i].evidence[j];
 
             // Is this evidence ruled out
-            if (containsEvidence(evidenceIndex, ruledOutEvidence) && ghostRuledOut == false)
+            if (containsEvidence(evidenceIndex, ruledOutEvidence))
             {
                 ghostRuledOut = true;
             }
@@ -210,21 +226,14 @@ function outputToGhosts(ghosts)
 
         gGhostsDiv.appendChild(el);
     }
-    
-    // If evidence is on ruled out list return true
-    function containsEvidence(evidence, rolist)
-    {
-        for (var i = 0; i < rolist.length; i++)
-            if (evidence == rolist[i])
-                return true;
-        return false;
-    }
 }
 
 // Return array of Possible ghosts
 function getPossibleGhosts(evidence)
 {
     var ghosts = [];
+    var ruledOutEvidence = getSelected(gEvidenceRuledOut);
+
     // For each ghost
     for (var gIndex = 0; gIndex < g_aGhosts.length; gIndex++)
     {
@@ -237,6 +246,16 @@ function getPossibleGhosts(evidence)
                 g_aGhosts[gIndex].evidence[2] == evidence[i]){
                 numMatches++;
             }
+        }
+
+        // Is ghost ruled out?
+        if (containsEvidence(g_aGhosts[gIndex].evidence[0], ruledOutEvidence) ||
+            containsEvidence(g_aGhosts[gIndex].evidence[1], ruledOutEvidence) ||
+            containsEvidence(g_aGhosts[gIndex].evidence[2], ruledOutEvidence)){
+            g_aGhosts[gIndex].ruledOut = true;
+        }
+        else {
+            g_aGhosts[gIndex].ruledOut = false;
         }
 
         // If the num matches match the evidence entered, add to the list
