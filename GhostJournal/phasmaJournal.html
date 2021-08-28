@@ -1,27 +1,52 @@
 <html>
     <head>
         <link href="style.css" rel="stylesheet"/>
-        <title>Ghost Journal</title>
+        <title>Ghost Journal | v0.3.0.1</title>
     </head>
     <body background="bkgrd.jpg">
-        <div style="width: 100%; display: inline-block;">
-            <input type="button" class="evidence" value="EMF Level 5" onclick="evidenceSelected(this,0);"/> 
-            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,0);"/> 
-            <br>
-            <input type="button" class="evidence" value="Fingerprints" onclick="evidenceSelected(this,1);"/>
-            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,1);"/> 
-            <br>
-            <input type="button" class="evidence" value="Ghost Writing" onclick="evidenceSelected(this,2);"/>
-            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,2);"/> 
-            <br>
-            <input type="button" class="evidence" value="Spirit Box" onclick="evidenceSelected(this,3);"/> 
-            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,3);"/> 
-            <br>
-            <input type="button" class="evidence" value="Freezing Temperatures" onclick="evidenceSelected(this,4);"/>
-            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,4);"/>  
-            <br>
-            <input type="button" class="evidence" value="Ghost Orbs" onclick="evidenceSelected(this,5);"/> 
-            <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,5);"/> 
+        <div id="evidenceOptions">
+            <div>
+                <span style="color: white">EMF Level 5</span>
+                <img src="imgs/emf.png" class="evidence" onclick="evidenceSelected(this,0);"/>
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,0);"/> 
+            </div>
+            <div>
+                <span style="color: white">Fingerprints</span>
+                <img src="imgs/finger.png" class="evidence" onclick="evidenceSelected(this,1);"/>
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,1);"/> 
+            </div>
+            <div>
+                <span style="color: white">Ghost Writing</span>
+                <img src="imgs/writing.png" class="evidence" onclick="evidenceSelected(this,2);"/>
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,2);"/> 
+            </div>
+            <div>
+                <span style="color: white">Spirit Box</span>
+                <img src="imgs/box.png" class="evidence" onclick="evidenceSelected(this,3);"/> 
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,3);"/> 
+            </div>
+            <div>
+                <span style="color: white">Freezing Temps</span>
+                <img src="imgs/freeze.png" class="evidence" onclick="evidenceSelected(this,4);"/>
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,4);"/>  
+            </div>
+            <div>
+                <span style="color: white">Ghost Orbs</span>
+                <img src="imgs/orbs.png" class="evidence" onclick="evidenceSelected(this,5);"/> 
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,5);"/>   
+            </div>
+            <div>
+                <span style="color: white">D.O.T.S Projector</span>
+                <img src="imgs/dots.png" class="evidence" onclick="evidenceSelected(this,6);"/> 
+                <br>
+                <input type="button" class="ruleOut" value="X" onclick="ruledOutEvidence(this,6);"/>
+            </div>
         </div>
         <hr>
         <div id="divGhosts"></div>

@@ -5,6 +5,7 @@ const EV_INDEX_WRITING = 2;
 const EV_INDEX_SPIRITBOX = 3;
 const EV_INDEX_FREEZING = 4;
 const EV_INDEX_ORBS = 5;
+const EV_INDEX_DOTS = 6;
 
 // Evidence 
 var g_aEvidence = [
@@ -13,96 +14,112 @@ var g_aEvidence = [
     { index: EV_INDEX_WRITING,      label: "Ghost Writing",         icon: "imgs/writing.png" },
     { index: EV_INDEX_SPIRITBOX,    label: "Spirit Box",            icon: "imgs/box.png" },
     { index: EV_INDEX_FREEZING,     label: "Freezing Temperatures", icon: "imgs/freeze.png" },
-    { index: EV_INDEX_ORBS,         label: "Ghost Orbs",            icon: "imgs/orbs.png" }
+    { index: EV_INDEX_ORBS,         label: "Ghost Orbs",            icon: "imgs/orbs.png" },
+    { index: EV_INDEX_DOTS,         label: "D.O.T.S Projector",     icon: "imgs/dots.png" }
 ];
 
 // Ghosts
 var g_aGhosts = [
     {
         type: "Spirit", 
-        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX], 
+        evidence: [EV_INDEX_EMF5, EV_INDEX_SPIRITBOX, EV_INDEX_WRITING], 
         strength: "None", 
         weakness: "Smudge Sticks"
     },
     {
         type:"Wraith", 
-        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING, EV_INDEX_SPIRITBOX],  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_SPIRITBOX, EV_INDEX_DOTS],  
         strength: "Walk through walls",  
         weakness: "Salt"
     },
     {
         type:"Phantom",  
-        evidence: [EV_INDEX_EMF5, EV_INDEX_FREEZING, EV_INDEX_ORBS],  
+        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_FINGERPRINTS, EV_INDEX_DOTS],  
         strength: "Drains sanity when seen",  
         weakness: "Photo Camera"
     },
     {
         type:"Mare",  
-        evidence: [EV_INDEX_FREEZING, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX],  
+        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_ORBS, EV_INDEX_WRITING],  
         strength: "Darkness",  
         weakness: "Lights"
     },
     {
         type:"Banshee",  
-        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING],  
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_DOTS],  
         strength: "Targets specific person",  
         weakness: "Crucifix"
     },
     {
         type:"Poltergeist",  
-        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX],  
+        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING],  
         strength: "Moves objects",  
         weakness: "Empty Room"
     },
     {
         type:"Revenant",  
-        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING],  
+        evidence: [EV_INDEX_ORBS, EV_INDEX_WRITING, EV_INDEX_FREEZING],  
         strength: "Fast when hunting",  
         weakness: "Hiding"
     },
     {
         type:"Shade",  
-        evidence: [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_WRITING],  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_FREEZING],  
         strength: "Targets certain player",  
         weakness: "Many People"
     },
     {
         type:"Jinn",  
-        evidence: [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_SPIRITBOX],  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_FREEZING],  
         strength: "Fast",  
         weakness: "Breaker Off"
     },
     {
         type:"Demon",  
-        evidence: [EV_INDEX_FREEZING, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX],  
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING, EV_INDEX_FREEZING],  
         strength: "Hunting",  
         weakness: "Ouiji Board"
     },
     {
         type:"Yurei",  
-        evidence: [EV_INDEX_ORBS, EV_INDEX_FREEZING, EV_INDEX_WRITING],  
+        evidence: [EV_INDEX_ORBS, EV_INDEX_FREEZING, EV_INDEX_DOTS],  
         strength: "Drains sanity",  
         weakness: "Sanity Pills"
     },
     {
         type:"Oni",  
-        evidence: [EV_INDEX_EMF5, EV_INDEX_WRITING, EV_INDEX_SPIRITBOX],  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FREEZING, EV_INDEX_DOTS],  
         strength: "Hunts with high activity",  
         weakness: "Easy to find"
     },
     {
-        type:"Yokai [BETA]",  
-        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_ORBS, EV_INDEX_WRITING],  
+        type:"Yokai",  
+        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_ORBS, EV_INDEX_DOTS],  
         strength: "Talking near ghost angers it, likely to attack",  
         weakness: "Only hears nearby sounds when hunting"
     },
     {
-        type:"Hantu [BETA]",  
-        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_WRITING],  
+        type:"Hantu",  
+        evidence: [EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS, EV_INDEX_FREEZING],  
         strength: "Moves faster in cold",  
         weakness: "Slower in warmth"
+    },
+    {
+        type:"Myling",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_WRITING],  
+        strength: "Quieter when hunting",  
+        weakness: "Frequently make paranormal sounds"
+    },
+    {
+        type:"Goryo",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_DOTS],  
+        strength: "Only shows itself on camera when no one is nearby",  
+        weakness: "Rarely seen from their place of death"
     }
 ];
+
+// TODO: Evidence Options Buttons - Dynamically create buttons using the evidence option objects
+// createEvidenceOptions();
 
 // Sort Ghosts A - Z
 g_aGhosts.sort((a,b) => (a.type > b.type) ? 1 : ((a.type < b.type) ? -1 : 0));
@@ -114,8 +131,8 @@ var bUseIcons = true; // Output
 var gGhostsDiv = document.getElementById("divGhosts");
 
 // Index Matches Evidence Index (Boolean Toggles)
-var gEvidenceSelected = [false,false,false,false,false,false];
-var gEvidenceRuledOut = [false,false,false,false,false,false];
+var gEvidenceSelected = [false,false,false,false,false,false,false];
+var gEvidenceRuledOut = [false,false,false,false,false,false,false];
 
 // On Load
 checkEvidence();
@@ -129,7 +146,38 @@ function checkEvidence()
     // Sort by ruled out ghosts (false -> true)
     ghostList.sort((a, b) => a.ruledOut - b.ruledOut);
 
+    // TODO: Impossible Evidence - Visually tell user when an evidence option is no longer a possibility. 
+    // EXAMPLES: Confirmed EMF 5 Takes possibility of Orbs off the table, and vice versa
+    console.log(impossibleEvidence(ghostList));
+
     outputToGhosts(ghostList);
+}
+
+function impossibleEvidence(ghostList)
+{
+    var evIndex = [0,0,0,0,0,0,0];
+    var evidence = [];
+
+    // Count for each occurance of evidence in possible ghost list
+    for(var g = 0; g < ghostList.length; g++)
+    {
+        for(var e = 0; e < ghostList[g].evidence.length; e++)
+        {
+            evIndex[ghostList[g].evidence[e]]++;
+        }
+    }
+
+    // If zero occurances, rule out evidence
+    for(var i = 0; i < evIndex.length; i++)
+    {
+        //console.log(g_aEvidence[i].label + ": " + evIndex[i]); // Debug output
+        if (evIndex[i] < 1)
+        {
+            evidence.push(g_aEvidence[i].icon);
+        }
+    }
+
+    return evidence;
 }
 
 // Toggle Selected
