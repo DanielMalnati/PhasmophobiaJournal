@@ -115,6 +115,30 @@ var g_aGhosts = [
         evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_DOTS],  
         strength: "Only shows itself on camera when no one is nearby",  
         weakness: "Rarely seen from their place of death"
+    },
+    {
+        type:"Onryo",  
+        evidence: [EV_INDEX_SPIRITBOX, EV_INDEX_ORBS, EV_INDEX_FREEZING],  
+        strength: "Extinguishing flame causes it to attack",  
+        weakness: "Less likely to hunt when threatened"
+    },
+    {
+        type:"Obake",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_FINGERPRINTS, EV_INDEX_ORBS],  
+        strength: "Rarely leaves evidence when interacting",  
+        weakness: "Shapeshifting leaves behind unique evidence"
+    },
+    {
+        type:"Raiju",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_ORBS, EV_INDEX_DOTS],  
+        strength: "Can use electircal power to move faster",  
+        weakness: "Easy to track when hunting, disrupts electrical"
+    },
+    {
+        type:"Twins",  
+        evidence: [EV_INDEX_EMF5, EV_INDEX_SPIRITBOX, EV_INDEX_FREEZING],  
+        strength: "Either twin can initiate hunt on prey",  
+        weakness: "Interact with inventory at same time"
     }
 ];
 
@@ -146,9 +170,10 @@ function checkEvidence()
     // Sort by ruled out ghosts (false -> true)
     ghostList.sort((a, b) => a.ruledOut - b.ruledOut);
 
-    // TODO: Impossible Evidence - Visually tell user when an evidence option is no longer a possibility. 
+    // Impossible Evidence - Visually tell user when an evidence option is no longer a possibility. 
     // EXAMPLES: Confirmed EMF 5 Takes possibility of Orbs off the table, and vice versa
-    console.log(impossibleEvidence(ghostList));
+    // TODO: Optimize this code
+    outputImpossible(impossibleEvidence(ghostList));
 
     outputToGhosts(ghostList);
 }
@@ -173,11 +198,33 @@ function impossibleEvidence(ghostList)
         //console.log(g_aEvidence[i].label + ": " + evIndex[i]); // Debug output
         if (evIndex[i] < 1)
         {
-            evidence.push(g_aEvidence[i].icon);
+            evidence.push(true); // Push the index of the impossible evidences
+        }
+        else
+        {
+            evidence.push(false);
         }
     }
 
     return evidence;
+}
+
+function outputImpossible(impIndexes)
+{
+    var element = document.getElementById("evidenceOptions");
+    for (var i = 0; i < impIndexes.length; i++)
+    {
+        var img = element.children[i].getElementsByTagName("img")[0];
+        if (gEvidenceSelected[i] == false)
+        {
+            if (impIndexes[i] == true || gEvidenceRuledOut[i] == true) {
+                img.className = "evidenceImpossible";
+            }
+            else if (impIndexes[i] == false && gEvidenceSelected[i] == false) {
+                img.className = "evidence";
+            }
+        }
+    }
 }
 
 // Toggle Selected
@@ -265,6 +312,21 @@ function outputToGhosts(ghosts)
             }
 
         }
+
+        // Descriptions - Only show when half the total ghosts are possible to avoid clutter
+        if (ghosts.length <= Math.ceil(g_aGhosts.length / 2))
+        {
+            el.appendChild(document.createElement("br"));
+            var spanStr = document.createElement("span");
+            spanStr.innerHTML = "S: " + ghosts[i].strength;
+            el.appendChild(spanStr);
+
+            el.appendChild(document.createElement("br"));
+            var spanWk = document.createElement("span");
+            spanWk.innerHTML = "W: " + ghosts[i].weakness;
+            el.appendChild(spanWk);
+        }
+        
 
         // Style if the ghost is ruled out
         if (ghostRuledOut)
